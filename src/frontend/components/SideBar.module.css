@@ -1,0 +1,35 @@
+.bodySideBar {
+    display: none;
+    position: fixed;
+    height: 90%;
+    background-color: #1f5de8;
+    width: 5rem;
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.35);
+    top: 5%;
+    left: 2%;
+    border-radius: 20px;
+    margin-right: 5rem;
+}
+
+.bodySideBarMobile {
+    text-align: center;
+    height: 60px;
+    position:fixed;
+    bottom: 3%;
+    background-color: #1f5de8;
+    width: 90%;
+    left: 5%;
+    border-radius: 20px;
+    z-index: 10;
+}
+
+@media (min-width: 640px) {
+    .bodySideBar {
+        display: block;
+    }
+
+    .bodySideBarMobile {
+        display: none;
+    }
+
+}

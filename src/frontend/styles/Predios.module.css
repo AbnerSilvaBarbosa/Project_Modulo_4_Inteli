@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+.input {
+    width: 320px;
+    height: 50px;
+
+    /*#1f92e8*/
+
+    border-bottom: 2px solid black;
+    
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    font-family: 'Montserrat', sans-serif;
+    color: black;
+    outline: 0;
+    font-size: 13pt;
+    margin-left: 7rem;
+    text-align:center;
+  }
+
+  .inputSala {
+    width: 320px;
+    height: 50px;
+
+    /*#1f92e8*/
+
+    border-bottom: 2px solid black;
+    
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    font-family: 'Montserrat', sans-serif;
+    color: black;
+    outline: 0;
+    font-size: 13pt;
+    text-align:center;
+    margin-left: 4px;
+  }
+
+  .inputSala:focus{
+    border:3px solid #1f92e8
+  }
+
+  .input:focus{
+    border:3px solid #1f92e8
+  }
+  
+  .input::placeholder {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13pt;
+    color: black;
+  }
+
+  @media (max-width: 1024px) {
+    .div {
+      width: 24rem ;
+    }
+    .input {
+      margin-left: 0rem;
+    }
+  }
+  

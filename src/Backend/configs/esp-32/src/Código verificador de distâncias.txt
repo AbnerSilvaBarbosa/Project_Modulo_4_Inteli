@@ -1,0 +1,147 @@
+#include <WiFi.h>
+#include <PubSubClient.h>
+#include <WiFiClientSecure.h>
+#include <string>
+#include <ArduinoJson.h>
+#include <HTTPClient.h>
+#define pinLED1 12  //GP2 ESP-01
+#define patID "132"
+//WiFi
+const char* SSID = "";                // SSID / nome da rede WiFi que deseja se conectar
+const char* PASSWORD = "";  // Senha da rede WiFi que deseja se conectar
+//MQTT Server
+const char* BROKER_MQTT = "210c91749efc49e9a28a2ddfd1b73711.s2.eu.hivemq.cloud"; //URL do broker MQTT que se deseja utilizar
+int BROKER_PORT = 8883;                      // Porta do Broker MQTT
+#define ID_MQTT  "BCI02"             //Informe um ID unico e seu. Caso sejam usados IDs repetidos a ultima conexão irá sobrepor a anterior.
+#define TOPIC_SUBSCRIBE "132"   //Informe um Tópico único. Caso sejam usados tópicos em duplicidade, o último irá eliminar o anterior.
+#define TOPIC_PUBLISH "localESP"
+//Declaração das Funções
+void mantemConexoes();  //Garante que as conexoes com WiFi e MQTT Broker se mantenham ativas
+void conectaWiFi();     //Faz conexão com WiFi
+void conectaMQTT();     //Faz conexão com Broker MQTT
+void recebePacote(char* topic, byte* payload, unsigned int length);
+//WiFiClient esp_client;
+WiFiClientSecure wifiClient;
+PubSubClient MQTT(wifiClient);
+StaticJsonDocument<200> doc;
+String data;
+void scanLocal() {
+  HTTPClient http;
+  int n = WiFi.scanNetworks();
+  Serial.println("Escaneamento completo");
+  if (n == 0){
+    Serial.println("Nenhuma internet foi encontrada");
+  } else {
+    Serial.print(n);
+    Serial.println(" internet encontradas");
+    JsonArray ssid = doc.createNestedArray("ssid");
+    JsonArray rssi = doc.createNestedArray("rssi");
+    doc["patrimonioId"] = patID;
+    for(int i = 0; i < n; i++) {
+      String name = WiFi.SSID(i);
+      if(name[0] == 'i' && name[1] == 'p' && name[2] == 't') {
+        ssid.add(WiFi.SSID(i));
+        rssi.add(WiFi.RSSI(i));
+        Serial.print(i + 1);
+        Serial.print(": ");
+        Serial.print(WiFi.SSID(i));
+        Serial.print("( ");
+        Serial.print(WiFi.RSSI(i));
+        Serial.print(" )");
+        Serial.println((WiFi.encryptionType(i) == WIFI_AUTH_OPEN)?"":"*");
+        delay(10);
+      }
+    }
+    serializeJson(doc, data);
+    http.begin("https://mhr23i-2659.preview.csb.app/Device/teste");
+    http.addHeader("Content-Type", "application/json");
+    int httpResponseCode = http.POST(data);
+    if(httpResponseCode>0){
+      String response = http.getString();  //Get the response to the request
+      Serial.println(httpResponseCode);   //Print return code
+      Serial.println(response);           //Print request answer
+    } else {
+      Serial.print("Error on sending POST: ");
+      Serial.println(httpResponseCode);
+    }
+    http.end();
+  }
+}
+void setupMQTT() {
+  wifiClient.setInsecure();
+  MQTT.setServer(BROKER_MQTT, BROKER_PORT);
+  MQTT.setCallback(recebePacote);
+}
+void setup() {
+  pinMode(pinLED1, OUTPUT);
+  Serial.begin(115200);
+  tone(pinLED1, 2000, 1000);
+  conectaWiFi();
+  setupMQTT();
+  scanLocal();
+}
+void loop() {
+  mantemConexoes();
+  MQTT.loop();
+}
+void mantemConexoes() {
+    if (!MQTT.connected()) {
+       conectaMQTT();
+    }
+    conectaWiFi(); //se não há conexão com o WiFI, a conexão é refeita
+}
+void conectaWiFi() {
+  if (WiFi.status() == WL_CONNECTED) {
+     return;
+  }
+  Serial.print("Conectando-se na rede: ");
+  Serial.print(SSID);
+  Serial.println("  Aguarde!");
+  WiFi.begin(SSID, PASSWORD); // Conecta na rede WI-FI
+  while (WiFi.status() != WL_CONNECTED) {
+      delay(100);
+      Serial.print(".");
+  }
+  Serial.println();
+  Serial.print("Conectado com sucesso, na rede: ");
+  Serial.print(SSID);
+  Serial.print("  IP obtido: ");
+  Serial.println(WiFi.localIP());
+}
+void conectaMQTT() {
+    while (!MQTT.connected()) {
+        Serial.print("Conectando ao Broker MQTT: ");
+        Serial.println(BROKER_MQTT);
+        if (MQTT.connect(ID_MQTT, "IPTracker", "iptTracker")) {
+            Serial.println("Conectado ao Broker com sucesso!");
+            MQTT.subscribe(patID);
+            int n = data.length();
+            // declaring character array
+            char char_array[n + 1];
+            // strcpy(char_array, data.c_str());
+            // MQTT.publish(TOPIC_PUBLISH, char_array);
+        }
+        else {
+            Serial.println("Noo foi possivel se conectar ao broker.");
+            Serial.println("Nova tentatica de conexao em 10s");
+            delay(10000);
+        }
+    }
+}
+void recebePacote(char* topic, byte* payload, unsigned int length)
+{
+    String msg;
+    //obtem a string do payload recebido
+    for(int i = 0; i < length; i++)
+    {
+       char c = (char)payload[i];
+       msg += c;
+    }
+    Serial.println(msg);
+    if (msg == "0") {
+      noTone(pinLED1);
+    }
+    if (msg == "1") {
+      tone(pinLED1, 2000);
+    }
+}

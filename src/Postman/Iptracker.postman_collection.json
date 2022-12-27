@@ -1,0 +1,364 @@
+{
+	"info": {
+		"_postman_id": "d1574711-b0d1-4cbe-ab6c-dda1d8f60e3e",
+		"name": "Iptracker",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Device",
+			"item": [
+				{
+					"name": "Criar dispositivo",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "patId",
+									"value": "1919199191",
+									"type": "text"
+								},
+								{
+									"key": "deviceName",
+									"value": "celular",
+									"type": "text"
+								},
+								{
+									"key": "deviceSala",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "devicePredio",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "deviceBattery",
+									"value": "40",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "${process.env.next_public_url_sandbox}/Device/createDevice",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"Device",
+								"createDevice"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Equipamentos em uma sala",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "predio",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "sala",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "${process.env.next_public_url_sandbox}/Device/getEquipamentoSala",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"Device",
+								"getEquipamentoSala"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Salas em um prédio",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "number",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "${process.env.next_public_url_sandbox}/Device/getSalas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"Device",
+								"getSalas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Todos os prédios",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "${process.env.next_public_url_sandbox}/Device/getPredios",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"Device",
+								"getPredios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Todos equipamentos registrados",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "${process.env.next_public_url_sandbox}/Device/equipamentosRegistrados",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"Device",
+								"equipamentosRegistrados"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Histórico",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "patId",
+									"value": "132",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "${process.env.next_public_url_sandbox}/Device/getHistory",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"Device",
+								"getHistory"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Registro de usuário",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "amanda",
+									"type": "default"
+								},
+								{
+									"key": "email",
+									"value": "amanda@inteli.edu.br",
+									"type": "default"
+								},
+								{
+									"key": "pass",
+									"value": "416686",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "${process.env.next_public_url_sandbox}/User/Register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"User",
+								"Register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login de usuário",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "auth",
+								"value": "",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "amanda@inteli.edu.br",
+									"type": "default"
+								},
+								{
+									"key": "pass",
+									"value": "416686",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "${process.env.next_public_url_sandbox}/User/Login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"User",
+								"Login"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "amanda@inteli.edu.br",
+									"disabled": true
+								},
+								{
+									"key": "pass",
+									"value": "416686",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Informações de usuário",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFtYW5kYUBpbnRlbGkuZWR1LmJyIiwiaWF0IjoxNjY5ODM0ODMxLCJleHAiOjE2Njk4Mzg0MzEsInN1YiI6IjYzODdhN2YyM2Y1MDI3OTI3YTE4MmZmZCJ9.TucolsAY9YrLaqOvFjS2uSiCc_EdRZ7dh_vykEF8yHg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "${process.env.next_public_url_sandbox}/User/Login",
+								"type": "default",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "id",
+									"value": "1",
+									"type": "default",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "${process.env.next_public_url_sandbox}/User/Infos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"User",
+								"Infos"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

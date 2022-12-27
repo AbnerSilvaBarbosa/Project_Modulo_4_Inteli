@@ -1,0 +1,22 @@
+.line {
+    width: 400px;
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.responsivity {
+    flex: 1;
+    height: 2px;
+    background-color: black;
+}
+
+.text {
+    width: 70px;
+    text-align: center;
+    font-weight: bold;
+}
+
+#margin {
+    margin-left: 1200px;
+}
